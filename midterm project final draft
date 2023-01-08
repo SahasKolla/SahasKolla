@@ -1,0 +1,53 @@
+
+def is_credit(credit_card_number):
+  # Implement Luhn's algorithm to check if credit card number is valid
+  sum = 0
+  # Double every second digit from right to left
+  for i, digit in enumerate(reversed(credit_card_number)):
+    digit = int(digit)
+    if i % 2 == 1:
+      digit *= 2
+    # Add digits of products together
+    if digit > 9:
+      sum += digit % 10 + 1
+    else:
+      sum += digit
+  # Check if sum is a multiple of 10
+  return sum % 10 == 0
+
+def is_visa(credit_card_number):
+  # Check if credit card number passes additional Visa requirements
+  if not is_credit(credit_card_number):
+    return False
+  if len(credit_card_number) != 16:
+    return False
+  if credit_card_number[0] != '4':
+    return False
+  return True
+
+def is_mastercard(credit_card_number):
+  # Check if credit card number passes additional MasterCard requirements
+  if not is_credit(credit_card_number):
+    return False
+  if len(credit_card_number) != 16:
+    return False
+  # Check if credit card number starts with 51, 52, 53, 54, or 55
+  return credit_card_number[:2] in ('51', '52', '53', '54', '55')
+
+def main(card_type, credit_card_number):
+  if not credit_card_number.isnumeric():
+    return "Invalid credit card number"
+  card_type = card_type.lower()
+  if card_type == 'visa':
+    if is_visa(credit_card_number):
+      return "Valid Visa credit card"
+    else:
+      return "Invalid Visa credit card"
+  elif card_type == 'mastercard':
+    if is_mastercard(credit_card_number):
+      return "Valid MasterCard credit card"
+    else:
+      return "Invalid MasterCard credit card"
+  else:
+    return "Invalid credit card type"
+     
